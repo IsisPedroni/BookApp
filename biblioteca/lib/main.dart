@@ -29,18 +29,25 @@ class HomePage extends StatefulWidget{
 }
 
 class HomePageState extends State {
+  final _controller = TextEditingController();
+  var titulo = '';
+  var itemCount = 0;
+  
+
   void _buscarLivros() async {
+      titulo = _controller.text ;
       final url = Uri.https(
       'www.googleapis.com',
       '/books/v1/volumes',
-      {'q': '{http}'},
+      {'q': '{$titulo}'},
     );
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final jsonResponse = convert.jsonDecode(response.body);
-      final itemCount = jsonResponse['totalItems'];
-      print('Number of books about HTTP: $itemCount.');
+      itemCount = jsonResponse['totalItems'];
+      print('Number of books about $titulo: $itemCount.');
+      setState(() {});
     } else {
       print('Request failed with status: ${response.statusCode}.');
     }
@@ -52,12 +59,14 @@ class HomePageState extends State {
     return Scaffold(
       body: Padding(padding: EdgeInsets.all(16),
       child: ListView(children:  [
-        const TextField(),
-        const SizedBox(height: 16,),
+         TextField(
+         controller: _controller,
+        ),
+        SizedBox(height: 16,),
         ElevatedButton.icon(onPressed: _buscarLivros, 
         icon: Icon(Icons.search), label: Text('Pesquisar')),
-        SizedBox(height: 16,),
-        Text('Foram encontrado X livros sobre X: ',
+        SizedBox(height: 16,), 
+        Text('Foram encontrado $itemCount livros sobre $titulo: ',
         style: Theme.of(context).textTheme.headlineMedium,),
 
       ],)),
