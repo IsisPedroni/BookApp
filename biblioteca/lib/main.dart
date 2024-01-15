@@ -3,7 +3,7 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 void main(){
-  runApp(BookApp());
+  runApp(const BookApp());
 }
 
 class BookApp extends StatelessWidget{
@@ -11,9 +11,11 @@ class BookApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-   return const MaterialApp(
-    home: HomePage(),
-
+   return MaterialApp(
+    theme: ThemeData(primarySwatch: Colors.amber,
+    inputDecorationTheme: const InputDecorationTheme(border: OutlineInputBorder())),
+    home: const HomePage(),
+  
    );
   }
 
@@ -62,10 +64,10 @@ class HomePageState extends State {
          TextField(
          controller: _controller,
         ),
-        SizedBox(height: 16,),
+        const SizedBox(height: 16,),
         ElevatedButton.icon(onPressed: _buscarLivros, 
-        icon: Icon(Icons.search), label: Text('Pesquisar')),
-        SizedBox(height: 16,), 
+        icon: const Icon(Icons.search), label: const Text('Pesquisar')),
+        const SizedBox(height: 16,), 
         Text('Foram encontrado $itemCount livros sobre $titulo: ',
         style: Theme.of(context).textTheme.headlineMedium,),
 
